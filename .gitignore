@@ -1,0 +1,5 @@
+/cmake-build-debug/
+/cmake-build-debug/.cmake/
+/cmake-build-debug/CMakeFiles/
+/cmake-build-debug/CMakeCache.txt
+/CMakeLists.txt
