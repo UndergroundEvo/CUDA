@@ -2,9 +2,12 @@
 // Created by miron on 06.02.24.
 //
 
+
 #include <iostream>
+#include <stdlib.h>
 #include <cuda_runtime.h>
-const long long N = 999989;
+using namespace std;
+const long long N = 99999999;
 
 __global__ void vectorAdd(const float *a, const float *b, float *c, int n) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -26,9 +29,10 @@ int main() {
     c = (float *)malloc(N * sizeof(float));
 
     for (int i = 0; i < N; ++i) {
-        a[i] = i;
-        b[i] = i * 2;
+        a[i] = rand()%9999999 +1;
+        b[i] = rand()%9999999 +1;
     }
+    cout<<"числа с генерированы"<<endl;
 
     // Копирование данных с хоста на устройство
     cudaMemcpy(d_a, a, N * sizeof(float), cudaMemcpyHostToDevice);
@@ -40,12 +44,10 @@ int main() {
     // Копирование результата с устройства на хост
     cudaMemcpy(c, d_c, N * sizeof(float), cudaMemcpyDeviceToHost);
 
-    // Вывод результата
     for (int i = 0; i < 10; ++i) {
         std::cout << "c[" << i << "] = " << c[i] << std::endl;
     }
 
-    // Освобождение памяти
     free(a);
     free(b);
     free(c);

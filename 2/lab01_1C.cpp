@@ -3,7 +3,10 @@
 //
 
 #include <iostream>
-const long long N = 999989; // Размер векторов
+#include <stdlib.h>
+
+using namespace std;
+const long long N = 99999999;
 
 void vectorAdd(const float *a, const float *b, float *c, int n) {
     for (int i = 0; i < n; ++i) {
@@ -12,28 +15,23 @@ void vectorAdd(const float *a, const float *b, float *c, int n) {
 }
 
 int main() {
-    float *a, *b, *c;   // Векторы на хосте
-
-    // Выделение памяти на хосте
+    float *a, *b, *c;
     a = new float[N];
     b = new float[N];
     c = new float[N];
 
-    // Заполнение векторов на хосте
     for (int i = 0; i < N; ++i) {
-        a[i] = i;
-        b[i] = i * 2;
+        a[i] = rand()%9999999 +1;
+        b[i] = rand()%9999999 +1;
     }
+    cout<<"числа с генерированы"<<endl;
 
-    // Выполнение сложения векторов на CPU
     vectorAdd(a, b, c, N);
 
-    // Вывод результата
     for (int i = 0; i < 10; ++i) {
         std::cout << "c[" << i << "] = " << c[i] << std::endl;
     }
 
-    // Освобождение памяти
     delete[] a;
     delete[] b;
     delete[] c;

@@ -2,6 +2,8 @@
 all:
 	nvcc lab01_1G.cu -o lab01_1G
 	g++  lab01_1C.cpp -o lab01_1C
+	g++  lab01_2.cpp -o lab01_2
+
 
 .PHONY: clean
 clean:
