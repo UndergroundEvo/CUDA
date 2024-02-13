@@ -1,44 +1,40 @@
-//
-// Created by miron on 06.02.24.
-//
-
 #include <iostream>
-#include <stdlib.h>
+#include <vector>
+#include <thread>
+#include <time.h>
 
-using namespace std;
-const long long N = 99999999;
-
-void vectorAdd(const float *a, const float *b, float *c, int n) {
-    for (int i = 0; i < n; ++i) {
+void vectorAdd(const std::vector<float> &a, const std::vector<float> &b, std::vector<float> &c, int start, int end) {
+    for (int i = start; i < end; ++i) {
         c[i] = a[i] + b[i];
     }
 }
 
 int main() {
-    float *a, *b, *c;
-    a = new float[N];
-    b = new float[N];
-    c = new float[N];
-
-    for (int i = 0; i < N; ++i) {
-        a[i] = rand()%9999999 +1;
-        b[i] = rand()%9999999 +1;
+    int n = 10000;
+    std::vector<float> a(n), b(n), c(n);
+    for (int i = 0; i < n; ++i) {
+        a[i] = i;
+        b[i] = i * 2;
     }
-    cout<<"числа с генерированы"<<endl;
-
-    vectorAdd(a, b, c, N);
-
-    for (int i = 0; i < 10; ++i) {
-        std::cout << "c[" << i << "] = " << c[i] << std::endl;
+    //количество поток создаеться изходя из потоков пороцессора
+    int numThreads = std::thread::hardware_concurrency();
+    std::vector<std::thread> threads;
+    for (int i = 0; i < numThreads; ++i) {
+        int start = i * (n / numThreads);
+        int end = (i == numThreads - 1) ? n : (i + 1) * (n / numThreads);
+        threads.emplace_back(vectorAdd, std::ref(a), std::ref(b), std::ref(c), start, end);
     }
 
-    delete[] a;
-    delete[] b;
-    delete[] c;
+    for (auto &thread : threads) {
+        thread.join();
+    }
+
+    // Выводим результат
+//    std::cout << "Result: ";
+//    for (int i = 0; i < n; ++i) {
+//        std::cout << c[i] << " ";
+//    }
+//    std::cout << std::endl;
 
     return 0;
 }
-
-
-
-

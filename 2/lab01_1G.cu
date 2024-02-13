@@ -1,14 +1,6 @@
-//
-// Created by miron on 06.02.24.
-//
-
-
 #include <iostream>
-#include <stdlib.h>
-#include <cuda_runtime.h>
-using namespace std;
-const long long N = 99999999;
 
+// CUDA ядро для сложения векторов на GPU
 __global__ void vectorAdd(const float *a, const float *b, float *c, int n) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i < n) {
@@ -17,47 +9,52 @@ __global__ void vectorAdd(const float *a, const float *b, float *c, int n) {
 }
 
 int main() {
-    float *a, *b, *c;
+    // Размер векторов
+    int n = 10000;
+
+    // Выделяем память под векторы на устройстве (GPU)
     float *d_a, *d_b, *d_c;
+    cudaMalloc((void **)&d_a, n * sizeof(float));
+    cudaMalloc((void **)&d_b, n * sizeof(float));
+    cudaMalloc((void **)&d_c, n * sizeof(float));
 
-    cudaMalloc((void **)&d_a, N * sizeof(float));
-    cudaMalloc((void **)&d_b, N * sizeof(float));
-    cudaMalloc((void **)&d_c, N * sizeof(float));
-
-    a = (float *)malloc(N * sizeof(float));
-    b = (float *)malloc(N * sizeof(float));
-    c = (float *)malloc(N * sizeof(float));
-
-    for (int i = 0; i < N; ++i) {
-        a[i] = rand()%9999999 +1;
-        b[i] = rand()%9999999 +1;
-    }
-    cout<<"числа с генерированы"<<endl;
-
-    // Копирование данных с хоста на устройство
-    cudaMemcpy(d_a, a, N * sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_b, b, N * sizeof(float), cudaMemcpyHostToDevice);
-
-    // Выполнение ядра CUDA для сложения векторов
-    vectorAdd<<<(N + 255) / 256, 256>>>(d_a, d_b, d_c, N);
-
-    // Копирование результата с устройства на хост
-    cudaMemcpy(c, d_c, N * sizeof(float), cudaMemcpyDeviceToHost);
-
-    for (int i = 0; i < 10; ++i) {
-        std::cout << "c[" << i << "] = " << c[i] << std::endl;
+    // Заполняем векторы на хосте (CPU)
+    float *h_a = new float[n];
+    float *h_b = new float[n];
+    for (int i = 0; i < n; ++i) {
+        h_a[i] = i;
+        h_b[i] = i * 2;
     }
 
-    free(a);
-    free(b);
-    free(c);
+    // Копируем данные из памяти на хосте в память на устройстве
+    cudaMemcpy(d_a, h_a, n * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, h_b, n * sizeof(float), cudaMemcpyHostToDevice);
+
+    // Вычисляем количество блоков и потоков на блок
+    int blockSize = 4096;
+    int numBlocks = (n + blockSize - 1) / blockSize;
+
+    // Вызываем CUDA ядро для сложения векторов на GPU
+    vectorAdd<<<numBlocks, blockSize>>>(d_a, d_b, d_c, n);
+
+    // Копируем результат обратно на хост
+    float *h_c = new float[n];
+    cudaMemcpy(h_c, d_c, n * sizeof(float), cudaMemcpyDeviceToHost);
+
+    // Выводим результат
+//    std::cout << "Result: ";
+//    for (int i = 0; i < n; ++i) {
+//        std::cout << h_c[i] << " ";
+//    }
+//    std::cout << std::endl;
+
+    // Освобождаем память
+    delete[] h_a;
+    delete[] h_b;
+    delete[] h_c;
     cudaFree(d_a);
     cudaFree(d_b);
     cudaFree(d_c);
 
     return 0;
 }
-
-
-
-

@@ -3,3 +3,8 @@
 /cmake-build-debug/CMakeFiles/
 /cmake-build-debug/CMakeCache.txt
 /CMakeLists.txt
+*.exe
+*.lib
+*.exp
+/.idea/*
+/.vs/*
