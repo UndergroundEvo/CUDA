@@ -12,6 +12,7 @@ endif()
 project ("CUDA_CMake")
 
 enable_language(CUDA)
+include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/include")
 
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (LAB02_GPU "LR02/src/LR02_2G.cu")

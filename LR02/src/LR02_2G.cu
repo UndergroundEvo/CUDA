@@ -41,7 +41,7 @@ int main() {
 
     cudaEventRecord(start, 0);
 
-    vectorAdd << < numBlocks, blockSize >> > (d_a, d_b, d_c, n);
+    vectorAdd <<< numBlocks, blockSize >>> (d_a, d_b, d_c, n);
 
     cudaEventRecord(stop, 0);
     cudaEventSynchronize(stop);
