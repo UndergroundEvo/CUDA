@@ -15,12 +15,16 @@ enable_language(CUDA)
 include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/include")
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (LAB02_GPU "LR02/src/LR02_2G.cu")
-add_executable (LAB02_CPU "LR02/src/LR02_2C.cpp")
+add_executable (LAB02_GPU "LR02/src/LR02_1G.cu")
+
+add_executable (LAB02_CPU_SINGLE "LR02/src/LR02_1C.cpp")
+add_executable (LAB02_CPU_THREADS "LR02/src/LR02_2C.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET LAB02_CPU PROPERTY CXX_STANDARD 20)
-  set_property(TARGET LAB02_GPU PROPERTY CUDA_ARCHITECTURES 75)
+  set_property(TARGET LAB02_CPU_THREADS PROPERTY CXX_STANDARD 20)
+  set_property(TARGET LAB02_CPU_SINGLE PROPERTY CXX_STANDARD 20)
+
+  set_property(TARGET LAB02_GPU PROPERTY CUDA_ARCHITECTURES 62)
 endif()
 
 # TODO: Добавьте тесты и целевые объекты, если это необходимо.
