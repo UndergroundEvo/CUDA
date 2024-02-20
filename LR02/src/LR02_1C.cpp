@@ -3,8 +3,9 @@
 #include <thread>
 #include <chrono>
 using namespace std;
-const int n = 9999999;
+const int n = 100000000;
 typedef std::chrono::milliseconds ms;
+typedef std::chrono::nanoseconds ns;
 
 
 int main() {
@@ -22,6 +23,7 @@ int main() {
 	}
 	end = chrono::system_clock::now();
 	
-	cout << "Wasted time: " << chrono::duration_cast<ms>(end - start).count() <<"ms" << endl;
+	cout << "Wasted time: " << chrono::duration_cast<ms>(end - start).count() <<"ms" << endl
+		<< chrono::duration_cast<ns>(end - start).count() << "ns";
 	return 0;
 }

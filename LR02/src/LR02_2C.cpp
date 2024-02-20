@@ -3,8 +3,9 @@
 #include <thread>
 #include <chrono>
 using namespace std;
-const int n = 9999999;
+const int n = 100000000;
 typedef std::chrono::milliseconds ms;
+typedef std::chrono::nanoseconds ns;
 
 void vectorAdd(const vector<float> &a, const vector<float> &b, vector<float> &c, int start, int end) {
     for (int i = start; i < end; ++i) {
@@ -15,6 +16,8 @@ void vectorAdd(const vector<float> &a, const vector<float> &b, vector<float> &c,
 int main() {
     vector<float> a(n), b(n), c(n);
     int numThreads = thread::hardware_concurrency();
+    //int numThreads = 4;
+
     chrono::time_point<chrono::system_clock> start, end;
 
     for (int i = 0; i < n; ++i) {
@@ -35,7 +38,7 @@ int main() {
     }
     end = chrono::system_clock::now();
 
-    cout << "Wasted time: " <<
-        (chrono::duration_cast<ms>(end - start).count()) <<"ms (probably wrong)"<< endl;
+    cout << "Wasted time: " << chrono::duration_cast<ms>(end - start).count() << "ms" << endl
+        << chrono::duration_cast<ns>(end - start).count() << "ns";
     return 0;
 }

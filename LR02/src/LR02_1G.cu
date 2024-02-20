@@ -4,7 +4,7 @@
 #include <iostream>
 #include <chrono>
 using namespace std;
-const int n = 9999999;
+const int n = 100000000;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::nanoseconds ns;
 

@@ -16,15 +16,16 @@ include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/in
 
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (LAB02_GPU "LR02/src/LR02_1G.cu")
-
 add_executable (LAB02_CPU_SINGLE "LR02/src/LR02_1C.cpp")
 add_executable (LAB02_CPU_THREADS "LR02/src/LR02_2C.cpp")
+
+add_executable (LAB03_GPU "LR03/src/LR03_1.cu")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LAB02_CPU_THREADS PROPERTY CXX_STANDARD 20)
   set_property(TARGET LAB02_CPU_SINGLE PROPERTY CXX_STANDARD 20)
-
   set_property(TARGET LAB02_GPU PROPERTY CUDA_ARCHITECTURES 62)
+  set_property(TARGET LAB03_GPU PROPERTY CUDA_ARCHITECTURES 62)
 endif()
 
 # TODO: Добавьте тесты и целевые объекты, если это необходимо.
