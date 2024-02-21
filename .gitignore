@@ -7,6 +7,9 @@
 *.exe
 *.exp
 *.lib
-/LR02/doc/~$Grafiki.xlsx
-/LR02/doc/~$LAB02.xlsx
-/LR02/doc/~$P.Otchet_LR02.docx
+
+~$*.xls
+~$*.xlsx
+
+~$*.doc
+~$*.docx
