@@ -10,9 +10,8 @@ if (POLICY CMP0141)
 endif()
 
 project ("CUDA_CMake")
-
-enable_language(CUDA)
 include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/include")
+enable_language(CUDA)
 
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (LR02_GPU "LR02/src/LR02_1G.cu")
@@ -21,11 +20,14 @@ add_executable (LR02_CPU_THREADS "LR02/src/LR02_2C.cpp")
 
 add_executable (LR03_GPU "LR03/src/LR03_1G.cu")
 
+add_executable (LR04_GPU "LR04/src/LR04_1G.cu")
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LR02_CPU_THREADS PROPERTY CXX_STANDARD 20)
   set_property(TARGET LR02_CPU_SINGLE PROPERTY CXX_STANDARD 20)
   set_property(TARGET LR02_GPU PROPERTY CUDA_ARCHITECTURES 62)
   set_property(TARGET LR03_GPU PROPERTY CUDA_ARCHITECTURES 62)
+  set_property(TARGET LR04_GPU PROPERTY CUDA_ARCHITECTURES 62)
 endif()
 
 # TODO: Добавьте тесты и целевые объекты, если это необходимо.
