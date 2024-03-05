@@ -12,15 +12,13 @@ const int n = 1 << 20;
 typedef std::chrono::milliseconds ms;
 typedef std::chrono::nanoseconds ns;
 
-__global__ void vectorAdd(const float *a, const float *b, float *c, int n)
-{
+__global__ void vectorAdd(const float *a, const float *b, float *c, int n) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i < n)
         c[i] = a[i] + b[i];
 }
 
-int main()
-{
+int main() {
     float elapsedTime;
     int blockSize = 1024;
     cudaEvent_t start, stop;
@@ -31,14 +29,13 @@ int main()
     cin >> numBlocks;
 
     float *d_a, *d_b, *d_c;
-    cudaMalloc((void **)&d_a, n * sizeof(float));
-    cudaMalloc((void **)&d_b, n * sizeof(float));
-    cudaMalloc((void **)&d_c, n * sizeof(float));
+    cudaMalloc((void **) &d_a, n * sizeof(float));
+    cudaMalloc((void **) &d_b, n * sizeof(float));
+    cudaMalloc((void **) &d_c, n * sizeof(float));
 
     float *h_a = new float[n],
-          *h_b = new float[n];
-    for (int i = 0; i < n; ++i)
-    {
+            *h_b = new float[n];
+    for (int i = 0; i < n; ++i) {
         h_a[i] = i;
         h_b[i] = i * 2;
     }
