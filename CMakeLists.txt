@@ -17,9 +17,7 @@ enable_language(CUDA)
 add_executable (LR02_GPU "LR02/src/LR02_1G.cu")
 add_executable (LR02_CPU_SINGLE "LR02/src/LR02_1C.cpp")
 add_executable (LR02_CPU_THREADS "LR02/src/LR02_2C.cpp")
-
 add_executable (LR03_GPU "LR03/src/LR03_1G.cu")
-
 add_executable (LR04_GPU "LR04/src/LR04_1G.cu")
 
 add_executable (LR05_GPU "LR05/src/LR05_1G.cu")
@@ -31,5 +29,5 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LR02_GPU PROPERTY CUDA_ARCHITECTURES 62)
   set_property(TARGET LR03_GPU PROPERTY CUDA_ARCHITECTURES 62)
   set_property(TARGET LR04_GPU PROPERTY CUDA_ARCHITECTURES 52)
-  set_property(TARGET LR05_GPU PROPERTY CUDA_ARCHITECTURES 62)
+  set_property(TARGET LR05_GPU PROPERTY CUDA_ARCHITECTURES 61)
 endif()
