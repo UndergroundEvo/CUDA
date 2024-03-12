@@ -48,7 +48,7 @@ int main() {
 
     cudaEventRecord(start, 0);
     start_chrono = chrono::system_clock::now();
-    vectorAdd<<<numBlocks, blockSize>>>(d_a, d_b, d_c, n);
+    vectorAdd<<<dim3(numBlocks), blockSize>>>(d_a, d_b, d_c, n);
     cudaEventRecord(stop, 0);
     end_chrono = chrono::system_clock::now();
 

@@ -37,11 +37,13 @@ int main() {
         cout<< endl;
     }
 
-    cout << "\ndim3((K + threads_per_block - 1) / threads_per_block = \n"
+    cout << "\ndim3((K + threads_per_block - 1) / threads_per_block = "
+         << ((K + threads_per_block - 1) / threads_per_block,(N + threads_per_block - 1) / threads_per_block) << "\n"
          <<"x = " << dim3((K + threads_per_block - 1) / threads_per_block,(N + threads_per_block - 1) / threads_per_block).x << "\t"
          <<"y = " << dim3((K + threads_per_block - 1) / threads_per_block,(N + threads_per_block - 1) / threads_per_block).y << "\t"
          <<"z = " << dim3((K + threads_per_block - 1) / threads_per_block,(N + threads_per_block - 1) / threads_per_block).z << "\t\n"
-         << "dim3(threads_per_block, threads_per_block) = \n"
+         << "dim3(threads_per_block, threads_per_block) = "
+         << threads_per_block << "\n"
          <<"x = " << dim3(threads_per_block, threads_per_block).x << "\t"
          <<"y = " << dim3(threads_per_block, threads_per_block).y << "\t"
          <<"z = " << dim3(threads_per_block, threads_per_block).z << endl;
