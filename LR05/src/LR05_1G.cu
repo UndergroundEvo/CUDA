@@ -49,7 +49,8 @@ void MatrixShow(const int N, const int K, const float *Matrix) {
 }
 
 int main() {
-    const int N = 8, K = 8, threadsPerBlock = 8;
+    const int num =  1 << 12;
+    int N = 8 * num, K = 8 * num, threadsPerBlock = 128;
     float *GPU_pre_matrix, *local_pre_matrix, *GPU_after_matrix, *local_after_matrix, elapsedTime;
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
@@ -63,15 +64,15 @@ int main() {
     local_pre_matrix = (float *) calloc(N * K, sizeof(float));
     local_after_matrix = (float *) calloc(N * K, sizeof(float));
 
-    cout<<"Initial Matrix: "<<endl;
+//    cout<<"Initial Matrix: "<<endl;
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < K; ++j) {
             local_pre_matrix[j + i * K] = j + i * K + 1;
-            cout << local_pre_matrix[j + i * K] << " ";
+//            cout << local_pre_matrix[j + i * K] << " ";
         }
-        cout<< endl;
+//        cout<< endl;
     }
-    cout<< endl;
+//    cout<< endl;
 
     cudaMemcpy(GPU_pre_matrix, local_pre_matrix, K * N * sizeof(float), cudaMemcpyHostToDevice);
 
@@ -87,7 +88,7 @@ int main() {
     cudaEventElapsedTime(&elapsedTime, start, stop);
 
     cout<<"1st method Matrix: "<<endl;
-    MatrixShow(N, K, local_after_matrix);
+//    MatrixShow(N, K, local_after_matrix);
 
     cout << "gBase_Transposition:\n\t"
          << elapsedTime
@@ -114,7 +115,7 @@ int main() {
     cudaEventElapsedTime(&elapsedTime, start, stop);
 
     cout<<"2st method Matrix: "<<endl;
-    MatrixShow(N, K, local_after_matrix);
+//    MatrixShow(N, K, local_after_matrix);
 
     cout << "gShared_Transposition_Wrong:\n\t"
          << elapsedTime
@@ -141,7 +142,7 @@ int main() {
     cudaEventElapsedTime(&elapsedTime, start, stop);
 
     cout<<"3st method Matrix: "<<endl;
-    MatrixShow(N, K, local_after_matrix);
+//    MatrixShow(N, K, local_after_matrix);
 
     cout << "gShared_Transposition:\n\t"
          << elapsedTime
