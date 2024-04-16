@@ -15,7 +15,7 @@ __global__ void gFunc(int *A, int *B, int *C, int N) {
 }
 
 int main() {
-    const int num = 1 << 12;
+    const int num = 1 << 13;
     int N = 4 * num, K = 8 * num, threads_per_block = 128;
     float elapsedTime = 0;
     cudaEvent_t start, stop;
@@ -43,8 +43,8 @@ int main() {
     cudaEventRecord(start, 0);
 
     gFunc<<<dim3(threads_per_block),
-            dim3((N * K + threads_per_block - 1) / threads_per_block)
-         >>>(hA, hB, hC, N * K);
+    dim3((N * K + threads_per_block - 1) / threads_per_block)
+    >>>(hA, hB, hC, N * K);
     cudaDeviceSynchronize();
 
     cudaEventRecord(stop, 0);

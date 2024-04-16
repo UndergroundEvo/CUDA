@@ -13,6 +13,8 @@ set (CMAKE_CXX_STANDARD 20)
 
 project ("CUDA_CMake")
 include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/include")
+#include_directories("${CMAKE_SOURCE_DIR}/../../utils")
+#target_link_libraries(CUDA_CUBLAS_LIBRARIES)
 enable_language(CUDA)
 
 # Добавьте источник в исполняемый файл этого проекта.
@@ -27,6 +29,10 @@ add_executable (LR05_GPU "LR05/src/LR05_1G.cu")
 add_executable (LR07_GPU_1 "LR07/src/LR07_1G.cu")
 add_executable (LR07_GPU_2 "LR07/src/LR07_2G.cu")
 
+add_executable (LR08_cuBLAS "LR08/src/LR08_1G.cu")
+add_executable (LR08_CUDA "LR08/src/LR08_2G.cu")
+#target_link_libraries(LR08_cuBLAS /usr/local/cuda-10.0/lib64/libcublas.so)
+
 
 # CUDA_ARCHITECTURES 35;37;50;52;53;60;61;62;70;72;75;80;86;87
 if (CMAKE_VERSION VERSION_GREATER 3.12)
@@ -39,4 +45,6 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LR05_GPU PROPERTY CUDA_ARCHITECTURES 61)
   set_property(TARGET LR07_GPU_1 PROPERTY CUDA_ARCHITECTURES 61)
   set_property(TARGET LR07_GPU_2 PROPERTY CUDA_ARCHITECTURES 61)
+  set_property(TARGET LR08_CUDA PROPERTY CUDA_ARCHITECTURES 61)
+  set_property(TARGET LR08_cuBLAS PROPERTY CUDA_ARCHITECTURES 61)
 endif()

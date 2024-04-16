@@ -69,7 +69,6 @@ int main() {
     thrust::device_vector<int> dA = vA;
     thrust::device_vector<int> dA_T(N * K);
 
-
     for (int i = 0; i < K * N; ++i) {
         map[i] = (i % N) * K + (i / N);
     }
