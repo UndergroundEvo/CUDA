@@ -11,14 +11,27 @@ endif()
 
 set (CMAKE_CXX_STANDARD 20)
 
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+
 project ("CUDA_CMake")
 include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/include")
 #include_directories("${CMAKE_SOURCE_DIR}/../../utils")
 #target_link_libraries(CUDA_CUBLAS_LIBRARIES)
 enable_language(CUDA)
-#find_package (Python COMPONENTS Interpreter Development)
-#find_package(PythonInterp 3 REQUIRED)
-#find_package(PythonLibs 3 REQUIRED)
+
+# OpenGL, GLFW и GLEW свистопляски
+find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+include_directories(${OPENGL_INCLUDE_DIRS})
+find_package(GLEW REQUIRED GLEW::glew_s)
+include_directories(${GLEW_LIBRARIES})
+
+set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
+set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
+set( GLAD_GL "" )
+
+add_subdirectory(glfw)
+
 
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (LR02_GPU "LR02/src/LR02_1G.cu")
@@ -42,6 +55,11 @@ add_executable (LR09_SCALAR "LR09/src/LR09_3G.cu")
 #add_executable (LR10_PY "LR10/src/LR10_1G.py")
 add_executable (LR10_cuBLAS "LR10/src/LR10_1G.cu")
 
+add_executable (RGZ_OpenGL "RGZ/src/RGZ_OpenGL.cpp")
+add_dependencies(RGZ_OpenGL OpenGL::GL GLEW::glew)
+target_link_libraries(RGZ_OpenGL ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} glfw)
+
+
 # CUDA_ARCHITECTURES 35;37;50;52;53;60;61;62;70;72;75;80;86;87
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LR02_CPU_THREADS PROPERTY CXX_STANDARD 20)
@@ -63,4 +81,6 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET LR09_SCALAR PROPERTY CUDA_ARCHITECTURES 61)
 
   set_property(TARGET LR10_cuBLAS PROPERTY CUDA_ARCHITECTURES 61)
+
+  #set_property(TARGET RGZ_OpenGL PROPERTY CXX_STANDARD 20)
 endif()
