@@ -9,29 +9,23 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-set (CMAKE_CXX_STANDARD 20)
-
+set (CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
 
 project ("CUDA_CMake")
 include_directories("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.3/include")
-#include_directories("${CMAKE_SOURCE_DIR}/../../utils")
-#target_link_libraries(CUDA_CUBLAS_LIBRARIES)
 enable_language(CUDA)
 
 # OpenGL, GLFW и GLEW свистопляски
-find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-include_directories(${OPENGL_INCLUDE_DIRS})
+add_subdirectory(glfw glfw/src)
+find_package(OpenGL 32 COMPONENTS OpenGL)
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLEW_LIBRARIES})
 find_package(GLEW REQUIRED GLEW::glew_s)
-include_directories(${GLEW_LIBRARIES})
+#set(GL_LIBRARY GL GLU X11)
 
-set( GLFW_BUILD_DOCS OFF CACHE BOOL  "GLFW lib only" )
-set( GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only" )
-set( GLAD_GL "" )
-
-add_subdirectory(glfw)
-
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (LR02_GPU "LR02/src/LR02_1G.cu")
@@ -47,7 +41,7 @@ add_executable (LR07_GPU_2 "LR07/src/LR07_2G.cu")
 
 add_executable (LR08_cuBLAS "LR08/src/LR08_1G.cu")
 add_executable (LR08_CUDA "LR08/src/LR08_2G.cu")
-#target_link_libraries(LR08_cuBLAS /usr/local/cuda-10.0/lib64/libcublas.so)
+
 add_executable (LR09_COPY "LR09/src/LR09_1G.cu")
 add_executable (LR09_STREAM "LR09/src/LR09_2G.cu")
 add_executable (LR09_SCALAR "LR09/src/LR09_3G.cu")
@@ -55,10 +49,14 @@ add_executable (LR09_SCALAR "LR09/src/LR09_3G.cu")
 #add_executable (LR10_PY "LR10/src/LR10_1G.py")
 add_executable (LR10_cuBLAS "LR10/src/LR10_1G.cu")
 
-add_executable (RGZ_OpenGL "RGZ/src/RGZ_OpenGL.cpp")
-add_dependencies(RGZ_OpenGL OpenGL::GL GLEW::glew)
-target_link_libraries(RGZ_OpenGL ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} glfw)
-
+add_executable (
+        RGZ_MatrixMultiplication "RGZ/src/main.cpp"
+        RGZ/src/RGZ.h
+        RGZ/src/Matrix.cpp
+        RGZ/src/Opengl.cpp
+)
+add_dependencies(RGZ_MatrixMultiplication OpenGL::GL GLEW::glew)
+target_link_libraries(RGZ_MatrixMultiplication ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} glfw)
 
 # CUDA_ARCHITECTURES 35;37;50;52;53;60;61;62;70;72;75;80;86;87
 if (CMAKE_VERSION VERSION_GREATER 3.12)
@@ -82,5 +80,4 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 
   set_property(TARGET LR10_cuBLAS PROPERTY CUDA_ARCHITECTURES 61)
 
-  #set_property(TARGET RGZ_OpenGL PROPERTY CXX_STANDARD 20)
 endif()
